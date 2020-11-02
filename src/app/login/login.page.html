@@ -1,0 +1,21 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>login</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-content>
+      <div>
+        <ion-label>Email</ion-label>
+        <ion-input type="email" placeholder="Email" [(ngModel)]="loginForm.email"></ion-input>
+      </div>
+      <div>
+        <ion-label>Password</ion-label>
+        <ion-input type="password" placeholder="Password" [(ngModel)]="loginForm.password" ></ion-input>
+      </div>
+      <ion-button (click)="login()" expand="block">Login</ion-button>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
