@@ -6,4 +6,10 @@
 
 <ion-content>
 <h1>Welcome!</h1>
+<div *ngIf="todos">
+  My Todos
+  <ul>
+    <li *ngFor="let todo of todos">{{todo}}</li>
+  </ul>
+</div>
 </ion-content>

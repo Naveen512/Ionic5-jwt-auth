@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { BehaviorSubject, Observable, from, of, throwError } from "rxjs";
-import { map, switchMap } from "rxjs/operators";
+import { map, switchMap, flatMap } from "rxjs/operators";
 import { JwtHelperService } from "@auth0/angular-jwt";
 import {Storage} from '@ionic/storage';
 import { Platform } from '@ionic/angular';
@@ -26,7 +26,7 @@ export class AuthService {
 
     this.checkUserObs = readyPlatformObs.pipe(
       switchMap(() => {
-          return from(this.getAccessToke());
+          return from(this.getAccessToken());
       }),
       map((token) => {
         if(!token){
@@ -39,8 +39,16 @@ export class AuthService {
     
   }
 
-  getAccessToke(){
+  getAccessToken(){
     return this.storage.get("access_token");
+  }
+
+  getRefreshToke(){
+    return this.storage.get("refresh_token");
+  }
+
+  callRefreshToken(payload){
+    return this.http.post("http://localhost:3000/auth/refreshtoken", payload);
   }
 
   useLogin(login: any): Observable<boolean> {
@@ -53,6 +61,7 @@ export class AuthService {
         map((response:any)=>{
           console.log(response);
           this.storage.set('access_token',response.access_token);
+          this.storage.set('refresh_token', response.refresh_token);
           var decodedUser = this.jwtHelper.decodeToken(response.access_token);
           this.userInfo.next(decodedUser);
           console.log(decodedUser);
@@ -60,23 +69,7 @@ export class AuthService {
         })
       )
     }
-    // if (login && login.email && login.password) {
-    //   var sampleJwt =
-    //     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlRlc3QiLCJzdWIiOjIsImlhdCI6MTYwNDMwOTc0OSwiZXhwIjoxNjA0MzA5ODA5fQ.jHez9kegJ7GT1AO5A2fQp6Dg9A6PBmeiDW1YPaCQoYs";
-
-    //   return of(sampleJwt).pipe(
-    //     map((token) => {
-    //       if (!token) {
-    //         return false;
-    //       }
-    //       this.storage.set('access_token',token);
-    //       var decodedUser = this.jwtHelper.decodeToken(token);
-    //       this.userInfo.next(decodedUser);
-    //       console.log(decodedUser);
-    //       return true;
-    //     })
-    //   );
-    // }
+    
     return of(false);
   }
 }

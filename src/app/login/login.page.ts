@@ -30,6 +30,7 @@ export class LoginPage implements OnInit {
          alert('login fails')
        }
      },error => {
+       console.log(error)
        alert('login fails')
      })
   }

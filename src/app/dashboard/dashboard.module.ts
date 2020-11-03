@@ -8,6 +8,7 @@ import { DashboardPageRoutingModule } from './dashboard-routing.module';
 
 import { DashboardPage } from './dashboard.page';
 
+import { TodoServie } from '../services/todos.service';
 
 @NgModule({
   imports: [
@@ -16,7 +17,7 @@ import { DashboardPage } from './dashboard.page';
     IonicModule,
     DashboardPageRoutingModule
   ],
-  providers:[],
+  providers:[TodoServie],
   declarations: [DashboardPage]
 })
 export class DashboardPageModule {}
